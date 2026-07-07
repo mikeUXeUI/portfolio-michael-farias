@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## O que é
 
-Portfólio de product designer (Michael Farias), site estático em **Astro** publicado na Vercel: https://portfolio-michael-farias.vercel.app. Idioma do conteúdo e da comunicação: **português**. Leia também o `README.md` para o guia completo do projeto.
+Portfólio de product designer (Michael Farias), site estático em **Astro** publicado na Vercel: https://michaelfarias.vercel.app. Idioma do conteúdo e da comunicação: **português**. Leia também o `README.md` para o guia completo do projeto.
 
 ## Comandos
 
