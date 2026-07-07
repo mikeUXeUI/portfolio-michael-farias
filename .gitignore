@@ -1,0 +1,31 @@
+# dependências e build do site (Astro)
+site/node_modules/
+site/dist/
+site/.astro/
+node_modules/
+dist/
+
+# estado local de deploy (não versionar)
+.vercel/
+.netlify/
+
+# material de trabalho: fonte de verdade fica fora do repo público (backup no Drive)
+/materiais/
+
+# config local do Obsidian
+/.obsidian/
+
+# notas internas e rascunhos que não vão para o repo público
+/GO-LIVE.md
+/preview-case-acordo.html
+/favicon.svg
+
+# ambiente e OS
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# temporários
+*.tmp
+/tmp/

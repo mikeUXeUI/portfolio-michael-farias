@@ -1,0 +1,103 @@
+---
+// Header fixo glass, idêntico em todas as páginas (persistido no View Transition).
+// Identidade à esquerda, nav + toggle de tema à direita, hambúrguer ≤768px.
+import { site } from '../data/site.ts';
+export interface Props { current?: string } // slug da página atual (ex.: 'sobre')
+const { current } = Astro.props;
+---
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="identity">
+      <span class="wm">{site.nome}</span>
+      <span class="desc">{site.descritor}</span>
+    </a>
+    <div class="nav-right">
+      <nav class="navlinks" id="navlinks" aria-label="Navegação principal">
+        {site.nav.map((item) => {
+          const ext = item.href.endsWith('.pdf') || item.href.startsWith('http');
+          return (
+            <a
+              href={item.href}
+              target={ext ? '_blank' : undefined}
+              rel={ext ? 'noopener' : undefined}
+              class={current && item.href.replace(/^\/#?/, '').replace(/#.*$/, '') === current ? 'here' : undefined}
+            >{item.label}</a>
+          );
+        })}
+      </nav>
+      <button class="tgl" id="tg" aria-label="Alternar tema"><span class="moon">☾</span><span class="sun">☀</span></button>
+      <button class="hamb" id="hamb" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="nav-scrim" id="navScrim"></div>
+
+<style>
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border-bottom: .5px solid var(--bd);
+    view-transition-name: site-header;
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding-block: 18px; }
+  .identity { display: inline-flex; align-items: baseline; gap: 12px; text-decoration: none; color: inherit; }
+  .wm { font-size: 14px; font-weight: 600; }
+  .desc { font-family: var(--fm); font-size: 14px; color: var(--ts); }
+  .navlinks { display: flex; align-items: center; gap: 24px; }
+  .navlinks a { font-size: 14px; color: var(--ts); text-decoration: none; transition: color .15s ease; }
+  .navlinks a:hover, .navlinks a.here { color: var(--int); }
+  .navlinks a.here { font-weight: 600; }
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .hamb { display: none; flex-direction: column; justify-content: center; gap: 4px; width: 32px; height: 32px; border: .5px solid var(--bd); border-radius: 8px; background: none; cursor: pointer; padding: 0; }
+  .hamb span { display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--tp); margin: 0 auto; transition: transform .25s ease, opacity .2s ease; }
+  .hamb.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamb.open span:nth-child(2) { opacity: 0; }
+  .hamb.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .nav-scrim { position: fixed; inset: 0; background: rgba(255,255,255,.6); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 39; }
+  :global(:root[data-theme="dark"]) .nav-scrim { background: rgba(255,255,255,.10); }
+  .nav-scrim.open { opacity: 1; pointer-events: auto; }
+  .tgl { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; background: none; border: .5px solid var(--bd); border-radius: 8px; color: var(--tp); font-size: 14px; cursor: pointer; }
+  .tgl:hover { background: var(--surface-alt); }
+  .tgl .sun { display: none; }
+  :global(:root[data-theme="dark"]) .tgl .sun { display: inline; }
+  :global(:root[data-theme="dark"]) .tgl .moon { display: none; }
+
+  @media (max-width: 768px) {
+    .desc { display: none; }
+    .hamb { display: flex; }
+    .navlinks {
+      position: fixed; top: 0; right: 0; height: 100vh; width: min(78vw, 300px);
+      background: var(--surface); border-left: .5px solid var(--bd);
+      flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 0;
+      padding: 84px 28px 28px; transform: translateX(100%);
+      transition: transform .3s cubic-bezier(.2,.7,.2,1); z-index: 40;
+    }
+    .navlinks.open { transform: translateX(0); }
+    .navlinks a { font-size: 15px; padding: 14px 0; width: 100%; border-bottom: .5px solid var(--bd); }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var tg = document.getElementById('tg');
+    if (tg) tg.addEventListener('click', function () {
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var n = dark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', n);
+      try { localStorage.setItem('theme', n); } catch (e) {}
+    });
+    var hamb = document.getElementById('hamb'),
+        nl = document.getElementById('navlinks'),
+        sc = document.getElementById('navScrim');
+    if (!hamb || !nl || !sc) return;
+    function set(o) {
+      hamb.classList.toggle('open', o); nl.classList.toggle('open', o); sc.classList.toggle('open', o);
+      document.body.style.overflow = o ? 'hidden' : '';
+    }
+    hamb.addEventListener('click', function () { set(!hamb.classList.contains('open')); });
+    sc.addEventListener('click', function () { set(false); });
+    nl.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { set(false); }); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+  })();
+</script>

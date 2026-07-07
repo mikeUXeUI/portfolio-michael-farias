@@ -1,0 +1,52 @@
+---
+// Galeria de trabalhos, 1 case por linha, em coluna central. Ordem = cases.ts.
+import { cases } from '../data/cases.ts';
+import CaseItem from './CaseItem.astro';
+---
+<section id="trabalho" class="section">
+  <div class="container">
+    <h2 class="shead"><a class="shead-link" href="#trabalho">Trabalhos</a></h2>
+    <div class="lista">
+      {cases.map((c) => (<CaseItem case={c} />))}
+    </div>
+  </div>
+</section>
+
+<style>
+  #trabalho { padding-top: clamp(24px, 3.5vh, 36px); scroll-margin-top: 84px; }
+  .lista { display: flex; flex-direction: column; gap: 32px; }
+</style>
+
+<script is:inline>
+  /* MOBILE: roda a animação da cover em loop quando o case entra na tela (sem depender de toque). */
+  (function () {
+    if (!window.matchMedia) return;
+    if (!window.matchMedia('(hover: none)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+    var covers = document.querySelectorAll('#trabalho .case .cover');
+    if (!covers.length) return;
+    function rootOf(iframe) { try { return iframe.contentDocument && iframe.contentDocument.querySelector('.cover-card'); } catch (e) { return null; } }
+    function start(iframe) {
+      if (iframe._animT) return;
+      /* o Acordo tem uma sequência mais longa ("pedido gerado"), loop mais lento */
+      var interval = /acordo/.test(iframe.src || '') ? 2800 : 1600;
+      var on = false;
+      function tick() { var r = rootOf(iframe); if (r) { on = !on; r.classList.toggle('is-anim', on); } }
+      tick();
+      iframe._animT = setInterval(tick, interval);
+    }
+    function stop(iframe) {
+      if (iframe._animT) { clearInterval(iframe._animT); iframe._animT = null; }
+      var r = rootOf(iframe); if (r) r.classList.remove('is-anim');
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var iframe = en.target.querySelector('iframe');
+        if (!iframe) return;
+        if (en.isIntersecting) start(iframe); else stop(iframe);
+      });
+    }, { threshold: 0.45 });
+    covers.forEach(function (c) { io.observe(c); });
+  })();
+</script>

@@ -1,0 +1,72 @@
+---
+// Página Sobre, porta 1:1 de preview-sobre.html: cartão de bio + mosaico de 5 fotos.
+// Reusa o MESMO Nav/Footer da home (header idêntico, persistido no View Transition).
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { sobre } from '../data/sobre.ts';
+---
+<Base title="Sobre · Michael Farias" description="Um pouco além do trabalho: quem é o Michael fora das telas.">
+  <Nav current="sobre" />
+
+  <div class="container sobre-page">
+    <div class="about-head">
+      <span class="hint">{sobre.hint}</span>
+    </div>
+
+    <div class="about-grid">
+      <div class="bio">
+        <p class="lead">{sobre.lead}</p>
+        {sobre.secoes.map((s) => (
+          <section>
+            <p class="lbl">{s.label}</p>
+            <p set:html={s.texto} />
+          </section>
+        ))}
+      </div>
+
+      <div class="mosaic">
+        {sobre.fotos.map((f) => (
+          <figure class={f.big ? 'mph m-big' : 'mph'}>
+            <img src={f.src} alt={f.alt} loading="lazy" />
+            <figcaption>{f.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</Base>
+
+<style>
+  /* respiro do header fixo (a home usa o hero; aqui reservamos o topo) */
+  .sobre-page { padding-top: 64px; }
+
+  .about-head { padding-block: 48px 8px; display: flex; align-items: baseline; justify-content: flex-end; gap: 16px; flex-wrap: wrap; }
+  .about-head .hint { font-family: var(--fm); font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: var(--ts); display: inline-flex; align-items: center; gap: 9px; }
+  .about-head .hint::before { content: ''; width: 12px; height: 3px; border-radius: 2px; background: var(--int); flex-shrink: 0; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1.18fr; gap: 24px; align-items: start; padding-bottom: 80px; }
+
+  /* cartão de bio (esquerda) */
+  .bio { border: .5px solid var(--bd); border-radius: 16px; background: var(--surface); padding: 32px 34px; }
+  .bio .lead { font-size: 20px; font-weight: 500; line-height: 1.45; margin: 0 0 24px; }
+  .bio section { padding: 18px 0; border-top: .5px solid var(--bd); }
+  .bio section:first-of-type { border-top: none; padding-top: 0; }
+  .bio .lbl { font-size: 14px; text-transform: uppercase; letter-spacing: .1em; color: var(--ts); margin: 0 0 8px; }
+  .bio p { margin: 0; color: var(--ts); }
+  .bio p b { color: var(--tp); font-weight: 600; }
+
+  /* mosaico de fotos (direita) */
+  .mosaic { display: grid; grid-template-columns: 1.35fr 1fr 1fr; grid-auto-rows: auto; gap: 14px; }
+  .mph { position: relative; margin: 0; border-radius: 16px; overflow: hidden; border: .5px solid var(--bd); background: var(--surface-alt); aspect-ratio: 1 / 1; }
+  .mph.m-big { grid-row: 1 / 3; aspect-ratio: auto; }
+  .mph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.2,.6,.2,1); }
+  .mph:hover img { transform: scale(1.05); }
+  .mph figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 14px 12px; font-family: var(--fm); font-size: 13px; letter-spacing: .02em; color: #fff; background: linear-gradient(to top, rgba(0,0,0,.55), transparent); opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease; }
+  .mph:hover figcaption { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .mph img { transition: none; } .mph:hover img { transform: none; } .mph figcaption { transition: opacity .2s ease; transform: none; } }
+
+  @media (max-width: 980px) { .about-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .mosaic { grid-template-columns: 1fr 1fr; } .mph.m-big { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 16 / 10; } }
+</style>

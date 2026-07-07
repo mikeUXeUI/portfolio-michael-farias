@@ -1,0 +1,30 @@
+---
+// Footer, © + LinkedIn / E-mail (copia pra área de transferência) / Currículo. Hover azul.
+import { site } from '../data/site.ts';
+const { email, linkedin, curriculoPdf } = site.contato;
+---
+<footer class="foot container">
+  <span>© {site.nome} · feito por mim</span>
+  <span class="mono">
+    <a href={linkedin} target="_blank" rel="noopener">LinkedIn</a>
+    <a href="#" id="foot-mail" data-mail={email}>E-mail</a>
+    <a href={curriculoPdf} target="_blank" rel="noopener">Currículo</a>
+  </span>
+</footer>
+
+<style>
+  .foot { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; border-top: .5px solid var(--bd); font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: var(--ts); flex-wrap: wrap; gap: 12px; }
+  .foot a { color: var(--tp); text-decoration: none; margin-left: 16px; }
+  .foot a:hover { color: var(--int); }
+</style>
+
+<script is:inline>
+  (function () {
+    var fm = document.getElementById('foot-mail'); if (!fm) return;
+    fm.addEventListener('click', function (e) {
+      e.preventDefault();
+      var mail = fm.dataset.mail;
+      window.copyText(mail).then(function () { window.showToast('E-mail copiado: ' + mail); });
+    });
+  })();
+</script>

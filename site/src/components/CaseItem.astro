@@ -1,0 +1,49 @@
+---
+// Um case da galeria: cover (iframe 50%) a esquerda, texto (50%) a direita.
+// Regra: a cover nunca e mais baixa que o texto. Tags editoriais; convite = card inset + botao contorno; abre o modal.
+import type { CaseItem } from '../data/cases.ts';
+export interface Props { case: CaseItem }
+const { case: c } = Astro.props;
+---
+<article class="case">
+  <div class="cover" aria-label={`Capa ${c.title}`}>
+    <iframe src={c.cover} scrolling="no" title={`Capa ${c.title}`} loading="lazy"></iframe>
+  </div>
+  <div>
+    <h3 class="case-title">{c.title}</h3>
+    {c.desc.map((p) => (<p class="case-desc">{p}</p>))}
+    <p class="case-tags">{c.tags.map((t) => (<span>{t}</span>))}</p>
+    <div class="cta-card">
+      <p class="msg">{c.invite}</p>
+      <a class="btn-ghost inv-cta" href="#" role="button"><span>Bora trocar uma ideia</span><span class="arr">↗</span></a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .case { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+  .case > div:not(.cover) { align-self: center; }
+  .cover { position: relative; border: .5px solid var(--bd); border-radius: 16px; overflow: hidden; background: var(--surface-alt); }
+  .cover::before { content: ''; display: block; padding-top: 62.5%; }
+  .cover > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; }
+
+  .case-title { font-size: 26px; font-weight: 700; line-height: 1.18; letter-spacing: -.01em; margin: 0 0 14px; }
+  .case-desc { font-size: 16px; color: var(--ts); line-height: 1.6; margin: 0 0 18px; }
+
+  /* tags editoriais (mono, caixa alta, separadas por barra) */
+  .case-tags { font-family: var(--font-display); font-size: 14px; font-weight: 500; color: var(--ts); margin: 0 0 16px; }
+  .case-tags span:not(:last-child)::after { content: ' / '; color: var(--bd); }
+
+  /* card de convite inset (fundo, sem borda) + botao contorno */
+  .cta-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--surface-alt); border: none; border-radius: 14px; padding: 16px 18px; flex-wrap: wrap; }
+  .cta-card .msg { margin: 0; font-size: 14px; color: var(--tp); min-width: 180px; flex: 1; }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 8px; background: none; color: var(--tp); border: .5px solid var(--bd); font-size: 14px; font-weight: 500; padding: 11px 18px; border-radius: 10px; text-decoration: none; cursor: pointer; white-space: nowrap; transition: border-color .15s ease, color .15s ease, background .15s ease; }
+  .btn-ghost:hover, .btn-ghost.flash { border-color: var(--int); color: var(--int); background: color-mix(in srgb, var(--int) 6%, transparent); }
+  .btn-ghost .arr { transition: transform .2s ease; }
+  .btn-ghost:hover .arr, .btn-ghost.flash .arr { transform: translate(2px,-2px); }
+  @media (prefers-reduced-motion: reduce) { .btn-ghost, .btn-ghost .arr { transition: none; } }
+  .inv-cta { cursor: pointer; }
+
+  @media (max-width: 900px) { .case { grid-template-columns: 1fr; gap: 22px; } }
+  @media (max-width: 768px) { .case-title { font-size: 22px; } }
+</style>

@@ -1,0 +1,20 @@
+---
+// Home, Nav, Hero, Trabalho (galeria), Diferenciais (ferramentas), Footer, Modal.
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Trabalho from '../components/Trabalho.astro';
+import Diferenciais from '../components/Diferenciais.astro';
+import ContatoModal from '../components/ContatoModal.astro';
+import Footer from '../components/Footer.astro';
+---
+<Base title="Michael Farias · Product Designer SaaS/B2B, dados e IA">
+  <Nav />
+  <main id="top">
+    <Hero />
+    <Trabalho />
+    <Diferenciais />
+  </main>
+  <Footer />
+  <ContatoModal />
+</Base>

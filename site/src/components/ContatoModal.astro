@@ -1,0 +1,129 @@
+---
+// Modal de contato (abre pelo convite de cada case) + cursor-tag "Vamos conversar"
+// + flash do BOTÃO do convite ao clicar na cover (foco no iframe). Mobile/vertical: traz o card à vista.
+// Campo de e-mail: o box INTEIRO copia; opção LinkedIn. Usa window.showToast/copyText (Base).
+import { site } from '../data/site.ts';
+const { email, linkedin } = site.contato;
+---
+<div class="modal" id="contact-modal">
+  <div class="modal-card">
+    <button class="modal-x" id="modal-x" aria-label="Fechar">×</button>
+    <p class="modal-title">Vamos conversar?</p>
+    <div class="modal-mail" id="modal-mail" role="button" tabindex="0" aria-label={`Copiar e-mail ${email}`} title="Clique para copiar">
+      <span class="addr" id="modal-mail-addr">{email}</span>
+      <span class="modal-copy" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+      </span>
+    </div>
+    <a class="modal-opt" href={linkedin} target="_blank" rel="noopener">Chamar no LinkedIn <span class="arr">↗</span></a>
+  </div>
+</div>
+
+<div class="cursor-tag" id="cursor-tag">Vamos conversar</div>
+
+<style>
+  .modal { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.6); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); padding: 24px; opacity: 0; pointer-events: none; transition: opacity .28s ease; }
+  .modal.open { opacity: 1; pointer-events: auto; }
+  :global(:root[data-theme="dark"]) .modal { background: rgba(255,255,255,.10); }
+  .modal-card { background: var(--surface); border: .5px solid var(--bd); border-radius: 12px; padding: 28px; max-width: 360px; width: 100%; position: relative; box-shadow: 0 16px 40px rgba(20,30,50,.16); opacity: 0; transform: translateY(8px) scale(.985); transition: opacity .28s ease, transform .3s cubic-bezier(.2,.7,.2,1); }
+  .modal.open .modal-card { opacity: 1; transform: none; }
+  :global(:root[data-theme="dark"]) .modal-card { box-shadow: 0 16px 44px rgba(0,0,0,.55); }
+  @media (prefers-reduced-motion: reduce) { .modal, .modal-card { transition: none; } .modal-card { transform: none; } }
+  .modal-title { font-size: 18px; font-weight: 500; margin: 0 0 18px; }
+  .modal-x { position: absolute; top: 12px; right: 14px; background: none; border: none; color: var(--ts); font-size: 20px; line-height: 1; cursor: pointer; }
+  .modal-opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border: .5px solid var(--bd); border-radius: 10px; text-decoration: none; color: var(--tp); font-size: 14px; margin-bottom: 10px; transition: background .15s; }
+  .modal-opt:last-child { margin-bottom: 0; }
+  .modal-opt:hover { background: var(--surface-alt); }
+  .modal-opt .arr { color: var(--ts); font-size: 16px; }
+
+  /* campo de e-mail no modal (box inteiro copia) */
+  .modal-mail { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: .5px solid var(--bd); border-radius: 10px; margin-bottom: 10px; background: var(--surface-alt); cursor: pointer; transition: border-color .15s ease; }
+  .modal-mail:hover { border-color: var(--int); }
+  .modal-mail:hover .modal-copy { color: var(--int); border-color: var(--int); }
+  .modal-mail .addr { font-family: var(--fm); font-size: 14px; color: var(--tp); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .modal-copy { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: .5px solid var(--bd); border-radius: 8px; background: var(--surface); color: var(--ts); cursor: pointer; transition: color .15s ease, border-color .15s ease; }
+  .modal-copy:hover { color: var(--int); border-color: var(--int); }
+  .modal-copy svg { width: 16px; height: 16px; display: block; }
+  .modal-copy.copied { color: var(--int); border-color: var(--int); }
+
+  /* cursor-tag azul (desktop) */
+  .cursor-tag { position: fixed; top: 0; left: 0; z-index: 60; pointer-events: none; display: inline-flex; align-items: center; background: #2F6FED; color: #fff; font-size: 14px; font-weight: 500; letter-spacing: .02em; padding: 7px 12px; border-radius: 8px; white-space: nowrap; transform: translate(18px,18px); transform-origin: top left; opacity: 0; clip-path: inset(0 100% 0 0 round 8px); transition: opacity .12s ease, clip-path .3s cubic-bezier(.2,.7,.2,1); will-change: left, top, clip-path; }
+  .cursor-tag.show { opacity: 1; clip-path: inset(0 0 0 0 round 8px); }
+  @media (prefers-reduced-motion: reduce) { .cursor-tag { transition: opacity .15s ease; } }
+  @media (hover: none) { .cursor-tag { display: none; } .inv-cta { cursor: pointer; } }
+</style>
+
+<script is:inline>
+  /* modal de contato */
+  (function () {
+    var m = document.getElementById('contact-modal');
+    if (!m) return;
+    function open() { m.classList.add('open'); }
+    function close() { m.classList.remove('open'); }
+    document.querySelectorAll('.inv-cta').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); open(); });
+    });
+    document.getElementById('modal-x').addEventListener('click', close);
+    m.addEventListener('click', function (e) { if (e.target === m) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    var mm = document.getElementById('modal-mail'),
+        addr = document.getElementById('modal-mail-addr'),
+        cp = mm && mm.querySelector('.modal-copy');
+    if (mm && addr) {
+      function doCopy() {
+        window.copyText(addr.textContent.trim()).then(function () {
+          if (cp) cp.classList.add('copied');
+          window.showToast('E-mail copiado: ' + addr.textContent.trim());
+          setTimeout(function () { if (cp) cp.classList.remove('copied'); }, 1200);
+        });
+      }
+      mm.addEventListener('click', doCopy);
+      mm.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); doCopy(); } });
+    }
+  })();
+
+  /* cursor-tag "Vamos conversar" no hover do convite (desktop) */
+  (function () {
+    var tag = document.getElementById('cursor-tag');
+    if (!tag) return;
+    var x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y;
+    document.addEventListener('mousemove', function (e) { x = e.clientX; y = e.clientY; });
+    function loop() { tx += (x - tx) * 0.2; ty += (y - ty) * 0.2; tag.style.left = tx + 'px'; tag.style.top = ty + 'px'; requestAnimationFrame(loop); }
+    requestAnimationFrame(loop);
+    document.querySelectorAll('.inv-cta').forEach(function (a) {
+      a.addEventListener('mouseenter', function () { tx = x; ty = y; tag.classList.add('show'); });
+      a.addEventListener('mouseleave', function () { tag.classList.remove('show'); });
+    });
+  })();
+
+  /* clique na cover (iframe) -> pisca o botao do convite; no mobile/vertical, traz o card a vista */
+  (function () {
+    function flashBtn(btn) {
+      if (!btn) return;
+      btn.classList.remove('flash');
+      void btn.offsetWidth;
+      btn.classList.add('flash');
+      clearTimeout(btn._flashT);
+      btn._flashT = setTimeout(function () { btn.classList.remove('flash'); }, 900);
+    }
+    var vertical = window.matchMedia('(max-width: 900px)');
+    window.addEventListener('blur', function () {
+      setTimeout(function () {
+        var el = document.activeElement;
+        if (!el || el.tagName !== 'IFRAME') return;
+        var caseEl = el.closest && el.closest('.case');
+        if (caseEl) {
+          var btn = caseEl.querySelector('.btn-ghost');
+          var card = caseEl.querySelector('.cta-card');
+          if (vertical.matches && card && card.scrollIntoView) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(function () { flashBtn(btn); }, 380);
+          } else {
+            flashBtn(btn);
+          }
+        }
+        try { el.blur(); window.focus(); } catch (e) {}
+      }, 0);
+    });
+  })();
+</script>

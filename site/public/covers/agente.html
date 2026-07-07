@@ -1,0 +1,47 @@
+<!-- SALVAR EM: materiais/03-cases/[nome-da-pasta]/assets/[nome-do-arquivo].html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto confidencial de IA — Cover</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:#FAFBFD;font-family:'Space Grotesk',Arial,sans-serif;height:100%}
+  @keyframes waveDrift1{0%{transform:translate(-8%,-4%) rotate(-6deg)}50%{transform:translate(6%,3%) rotate(-4deg)}100%{transform:translate(-8%,-4%) rotate(-6deg)}}
+  @keyframes waveDrift2{0%{transform:translate(6%,4%) rotate(5deg)}50%{transform:translate(-6%,-3%) rotate(3deg)}100%{transform:translate(6%,4%) rotate(5deg)}}
+  @keyframes waveDrift3{0%{transform:translate(-5%,2%) rotate(-3deg)}50%{transform:translate(5%,-2%) rotate(-1deg)}100%{transform:translate(-5%,2%) rotate(-3deg)}}
+  @keyframes aiGradientShift{0%{background-position:0 0,0% 0}100%{background-position:0 0,200% 0}}
+  @keyframes cursorBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  .cover-card{position:relative;width:100%;height:100%;overflow:hidden;background:#0B1F3D;container-type:size;cursor:pointer}
+  .wave{position:absolute;border-radius:50%;filter:blur(46px)}
+  .w1{left:-30%;top:-10%;width:160%;height:55%;background:radial-gradient(ellipse,#1E4E86,transparent 70%);animation:waveDrift1 13s ease-in-out infinite}
+  .w2{left:-25%;bottom:-15%;width:150%;height:50%;background:radial-gradient(ellipse,#14345C,transparent 70%);animation:waveDrift2 16s ease-in-out infinite}
+  .w3{left:-10%;top:30%;width:120%;height:30%;background:radial-gradient(ellipse,#3B7DD8,transparent 65%);opacity:.55;animation:waveDrift3 11s ease-in-out infinite}
+  .pw{position:absolute;left:50%;top:50%;z-index:2;max-width:54%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:1.7cqw;border:2px solid transparent;background-image:linear-gradient(rgba(255,255,255,.96),rgba(255,255,255,.96)),linear-gradient(90deg,#5B8DEF,#9D6BEA,#EA6FA8,#F4C04E,#5B8DEF);background-origin:border-box;background-clip:padding-box,border-box;background-size:100% 100%,100% 100%;background-position:0 0,0% 0%;border-radius:999px;padding:1.8cqw 2.8cqw;box-shadow:0 0.9cqw 2cqw rgba(0,0,0,.18);transition:transform .4s cubic-bezier(.2,.6,.2,1),box-shadow .4s ease}
+  .cover-card:hover .pw{transform:translate(-50%,-50%) translateY(-2px) scale(1.03);background-size:100% 100%,300% 100%;animation:aiGradientShift 2.2s linear infinite;box-shadow:0 1.4cqw 2.8cqw rgba(0,0,0,.25)}
+  .dot{width:1.5cqw;height:1.5cqw;border-radius:50%;background:#2B2B2E;transition:transform .3s ease}
+  .cover-card:hover .dot{transform:scale(1.12)}
+  .cursor{width:2px;height:2cqw;background:#2B2B2E;margin-left:.2cqw;animation:cursorBlink 1.1s step-end infinite}
+img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
+*{-webkit-tap-highlight-color:transparent}
+
+/* mobile autoplay (parent alterna .is-anim) */
+.cover-card.is-anim .pw{transform:translate(-50%,-50%) translateY(-2px) scale(1.03);background-size:100% 100%,300% 100%;animation:aiGradientShift 2.2s linear infinite;box-shadow:0 1.4cqw 2.8cqw rgba(0,0,0,.25)}.cover-card.is-anim .dot{transform:scale(1.12)}
+</style>
+</head>
+<body>
+  <div class="cover-card">
+    <div class="wave w1"></div>
+    <div class="wave w2"></div>
+    <div class="wave w3"></div>
+    <div class="pw" id="pw">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="cursor"></div>
+    </div>
+  </div>
+</body>
+</html>

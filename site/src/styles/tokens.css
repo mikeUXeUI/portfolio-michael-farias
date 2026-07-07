@@ -1,0 +1,62 @@
+/* ============================================================
+   Design tokens. Espelha materiais/05-assets-gerais/identidade-visual/design-system.md
+   Fonte de verdade: design-system.md; este arquivo e o destino no Astro.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* cor, light */
+  --bg: #FAFBFD;
+  --surface: #FFFFFF;
+  --surface-alt: #F1F3F6;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B7077;
+  --border: #E6E9ED;
+  --interactive: #2F6FED;         /* azul: acento unico (acao + destaque) */
+  --hi: rgba(47,111,237,.16);     /* grifo/marca-texto (azul suave) */
+
+  --tp: var(--text-primary);
+  --ts: var(--text-secondary);
+  --bd: var(--border);
+  --int: var(--interactive);
+
+  /* tipografia */
+  --font-display: 'Manrope', 'Helvetica Neue', Arial, system-ui, sans-serif;      /* corpo, UI, titulos */
+  --font-hero: 'Bricolage Grotesque', 'Manrope', 'Helvetica Neue', Arial, sans-serif; /* so o H1 do hero */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;                          /* rotulos e meta */
+  --fd: var(--font-display);
+  --fh: var(--font-hero);
+  --fm: var(--font-mono);
+
+  /* layout */
+  --container-max: 1250px;
+  --container-pad: clamp(20px, 4vw, 36px);
+  --nav-h: 64px;
+
+  /* raio */
+  --r-btn: 8px;
+  --r-card: 16px;
+  --r-pill: 999px;
+
+  /* easing padrao */
+  --ease: cubic-bezier(.2, .6, .2, 1);
+}
+
+:root[data-theme="dark"] {
+  --bg: #0E0F13;
+  --surface: #16181E;
+  --surface-alt: #1C1F26;
+  --text-primary: #E6E6E6;
+  --text-secondary: #8A8D97;
+  --border: #2A2C33;
+  --interactive: #3B82F6;
+  --hi: rgba(59,130,246,.22);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #0E0F13; --surface: #16181E; --surface-alt: #1C1F26;
+    --text-primary: #E6E6E6; --text-secondary: #8A8D97;
+    --border: #2A2C33; --interactive: #3B82F6; --hi: rgba(59,130,246,.22);
+  }
+}
