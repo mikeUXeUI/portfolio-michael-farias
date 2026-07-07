@@ -8,6 +8,9 @@ const {
   title = 'Michael Farias · Product Designer',
   description = 'Portfólio de Michael Farias, Product Designer SaaS/B2B, dados e IA.'
 } = Astro.props;
+// URLs absolutas derivadas de `site` no astro.config (fonte única do domínio).
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('og.png', Astro.site).href;
 ---
 <!doctype html>
 <html lang="pt-BR">
@@ -21,15 +24,15 @@ const {
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://portfolio-michael-farias.vercel.app/og.png" />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:url" content="https://portfolio-michael-farias.vercel.app/" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://portfolio-michael-farias.vercel.app/og.png" />
+    <meta name="twitter:image" content={ogImage} />
     <!-- aplica o tema antes do paint pra evitar flash -->
     <script is:inline>
       (function () {
