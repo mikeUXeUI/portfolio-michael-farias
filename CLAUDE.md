@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## O que é
 
-Portfólio de product designer (Michael Farias), site estático em **Astro** publicado no Netlify: https://michaelfarias.netlify.app. Idioma do conteúdo e da comunicação: **português**. Leia também o `README.md` (guia completo do projeto) e o `GO-LIVE.md` (deploy) antes de mudanças grandes ou publicação.
+Portfólio de product designer (Michael Farias), site estático em **Astro** publicado na Vercel: https://portfolio-michael-farias.vercel.app. Idioma do conteúdo e da comunicação: **português**. Leia também o `README.md` para o guia completo do projeto.
 
 ## Comandos
 
@@ -41,6 +41,8 @@ Não há testes nem linter configurados.
 
 ## Deploy
 
-O build-from-source do Netlify **falha** (erro pendente de investigação); não migrar para deploy automático via Git antes de resolver. O método que funciona é buildar localmente e subir o `dist/` como deploy estático; passo a passo, site_id e gotchas no `GO-LIVE.md`. Antes de publicar, validar o CSS gerado em `dist/_astro/*.css` (um `.astro` truncado no `<style>` builda sem erro, só descarta regras).
+Hospedado na **Vercel**, com **deploy automático a cada push** para `main` (repo GitHub `mikeUXeUI/portfolio-michael-farias`, público). Na Vercel o **Root Directory** do projeto é `site` (o Astro é detectado sozinho, sem adaptador, por ser estático). Para publicar, basta `git push`; não há passo manual.
 
-Nota: as seções sobre corrupção de arquivos (NULL bytes, Read com cache) no README/GO-LIVE valem para o mount do Cowork, **não** para o Claude Code em ambiente local.
+O repositório versiona **só o site** (`site/` + docs). O `materiais/` (fonte de verdade do conteúdo) fica fora do Git, com backup no Drive; a regra de ouro `materiais/ → site/` continua valendo localmente.
+
+Nota histórica: o site já esteve no Netlify (`michaelfarias.netlify.app`) via deploy estático manual, abandonado na migração para a Vercel. As menções a Netlify e aos gotchas do mount Cowork no `README.md` referem-se a esse período.
