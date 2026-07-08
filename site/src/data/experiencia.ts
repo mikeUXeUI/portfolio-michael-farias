@@ -7,8 +7,8 @@ export interface Experiencia {
 
 export const experiencia: Experiencia[] = [
   { periodo: '2023 →', empresa: 'Starian', cargo: 'Product Designer · Sienge (ERP SaaS B2B)' },
-  { periodo: '2021,23', empresa: 'Prensa', cargo: 'Principal Product Designer' },
-  { periodo: '2015,21', empresa: 'Design Gráfico', cargo: 'Ilustração · Branding · Comunicação · Marketing' }
+  { periodo: '2021 a 2023', empresa: 'Prensa', cargo: 'Principal Product Designer' },
+  { periodo: '2015 a 2021', empresa: 'Design Gráfico', cargo: 'Ilustração · Branding · Comunicação · Marketing' }
 ];
 
 // Palavra rotativa da hero (herda o estilo da frase)

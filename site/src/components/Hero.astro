@@ -8,6 +8,7 @@ const rotLabel = heroRotativa.join(', ');
   <div class="hero-grid">
     <div>
       <h1>Prazer ter você aqui!<br><span style="white-space:nowrap">Sou Michael</span> <span class="mark"><span class="rotator" aria-label={rotLabel}><ul aria-hidden="true">{heroRotativa.map((w) => (<li>{w}</li>))}<li>{heroRotativa[0]}</li></ul></span></span></h1>
+      <a class="hero-cta" href="#trabalho">Ver trabalhos <span class="arr" aria-hidden="true">↓</span></a>
     </div>
     <ul class="exp">
       {experiencia.map((e) => (
@@ -24,6 +25,11 @@ const rotLabel = heroRotativa.join(', ');
   .hero { padding-block: clamp(88px, 12vh, 132px) clamp(16px, 2.5vh, 32px); }
   .hero-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; align-items: center; width: 100%; }
   .hero h1 { font-family: var(--font-hero); font-weight: 700; font-size: 48px; line-height: 1.14; letter-spacing: -.01em; margin: 0 0 14px; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: none; color: var(--tp); border: .5px solid var(--bd); font-family: var(--fd); font-size: 15px; font-weight: 500; padding: 12px 20px; border-radius: 10px; text-decoration: none; transition: border-color .15s ease, color .15s ease, background .15s ease; }
+  .hero-cta:hover { border-color: var(--int); color: var(--int); background: color-mix(in srgb, var(--int) 6%, transparent); }
+  .hero-cta .arr { transition: transform .2s ease; }
+  .hero-cta:hover .arr { transform: translateY(2px); }
+  @media (prefers-reduced-motion: reduce) { .hero-cta, .hero-cta .arr { transition: none; } }
   .mark { position: relative; z-index: 0; }
   .mark::after { content: ''; position: absolute; left: -.06em; right: -.06em; bottom: .08em; height: .42em; background: var(--hi); z-index: -1; border-radius: 3px; }
   .rotator { display: inline-block; height: 1.14em; overflow: hidden; vertical-align: bottom; color: var(--tp); }
@@ -40,7 +46,7 @@ const rotLabel = heroRotativa.join(', ');
   .exp { list-style: none; margin: 0; padding: 0; }
   .exp li { display: flex; gap: 12px; align-items: baseline; padding: 8px 0; border-bottom: .5px solid var(--bd); }
   .exp li:last-child { border-bottom: none; }
-  .exp .yr { font-size: 14px; color: var(--ts); width: 64px; flex-shrink: 0; }
+  .exp .yr { font-size: 14px; color: var(--ts); width: 100px; flex-shrink: 0; white-space: nowrap; }
   .exp .co { font-size: 14px; font-weight: 600; }
   .exp .ro { font-size: 14px; color: var(--ts); display: block; }
 

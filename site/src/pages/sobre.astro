@@ -4,6 +4,7 @@
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import ContatoModal from '../components/ContatoModal.astro';
 import { sobre } from '../data/sobre.ts';
 ---
 <Base title="Sobre · Michael Farias" description="Um pouco além do trabalho: quem é o Michael fora das telas.">
@@ -34,9 +35,15 @@ import { sobre } from '../data/sobre.ts';
         ))}
       </div>
     </div>
+
+    <div class="about-cta">
+      <p class="msg">{sobre.cta}</p>
+      <a class="btn-ghost inv-cta" href="#" role="button"><span>Bora trocar uma ideia</span><span class="arr">↗</span></a>
+    </div>
   </div>
 
   <Footer />
+  <ContatoModal />
 </Base>
 
 <style>
@@ -46,7 +53,7 @@ import { sobre } from '../data/sobre.ts';
   .about-head { padding-block: 48px 8px; display: flex; align-items: baseline; justify-content: flex-end; gap: 16px; flex-wrap: wrap; }
   .about-head .hint { font-family: var(--fm); font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: var(--ts); display: inline-flex; align-items: center; gap: 9px; }
   .about-head .hint::before { content: ''; width: 12px; height: 3px; border-radius: 2px; background: var(--int); flex-shrink: 0; }
-  .about-grid { display: grid; grid-template-columns: 1fr 1.18fr; gap: 24px; align-items: start; padding-bottom: 80px; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1.18fr; gap: 24px; align-items: start; padding-bottom: 40px; }
 
   /* cartão de bio (esquerda) */
   .bio { border: .5px solid var(--bd); border-radius: 16px; background: var(--surface); padding: 32px 34px; }
@@ -57,16 +64,27 @@ import { sobre } from '../data/sobre.ts';
   .bio p { margin: 0; color: var(--ts); }
   .bio p b { color: var(--tp); font-weight: 600; }
 
-  /* mosaico de fotos (direita) */
-  .mosaic { display: grid; grid-template-columns: 1.35fr 1fr 1fr; grid-auto-rows: auto; gap: 14px; }
+  /* mosaico de fotos (direita); sticky pra ocupar a altura do cartao de bio no desktop */
+  .mosaic { position: sticky; top: calc(var(--nav-h) + 24px); display: grid; grid-template-columns: 1.35fr 1fr 1fr; grid-auto-rows: auto; gap: 14px; }
   .mph { position: relative; margin: 0; border-radius: 16px; overflow: hidden; border: .5px solid var(--bd); background: var(--surface-alt); aspect-ratio: 1 / 1; }
   .mph.m-big { grid-row: 1 / 3; aspect-ratio: auto; }
   .mph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.2,.6,.2,1); }
   .mph:hover img { transform: scale(1.05); }
   .mph figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 14px 12px; font-family: var(--fm); font-size: 13px; letter-spacing: .02em; color: #fff; background: linear-gradient(to top, rgba(0,0,0,.55), transparent); opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease; }
-  .mph:hover figcaption { opacity: 1; transform: none; }
+  .mph:hover figcaption, .mph:focus-within figcaption { opacity: 1; transform: none; }
+  /* touch nao tem hover: manter legenda sempre visivel */
+  @media (hover: none) { .mph figcaption { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .mph img { transition: none; } .mph:hover img { transform: none; } .mph figcaption { transition: opacity .2s ease; transform: none; } }
 
-  @media (max-width: 980px) { .about-grid { grid-template-columns: 1fr; } }
+  /* CTA de fim de pagina: mesmo padrao visual do convite dos cases (CaseItem) */
+  .about-cta { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--surface-alt); border-radius: 14px; padding: 18px 20px; margin-bottom: 80px; flex-wrap: wrap; }
+  .about-cta .msg { margin: 0; font-size: 15px; color: var(--tp); min-width: 200px; flex: 1; }
+  .about-cta .btn-ghost { display: inline-flex; align-items: center; gap: 8px; background: none; color: var(--tp); border: .5px solid var(--bd); font-size: 14px; font-weight: 500; padding: 11px 18px; border-radius: 10px; text-decoration: none; cursor: pointer; white-space: nowrap; transition: border-color .15s ease, color .15s ease, background .15s ease; }
+  .about-cta .btn-ghost:hover, .about-cta .btn-ghost.flash { border-color: var(--int); color: var(--int); background: color-mix(in srgb, var(--int) 6%, transparent); }
+  .about-cta .btn-ghost .arr { transition: transform .2s ease; }
+  .about-cta .btn-ghost:hover .arr { transform: translate(2px,-2px); }
+  @media (prefers-reduced-motion: reduce) { .about-cta .btn-ghost, .about-cta .btn-ghost .arr { transition: none; } }
+
+  @media (max-width: 980px) { .about-grid { grid-template-columns: 1fr; } .mosaic { position: static; top: auto; } }
   @media (max-width: 560px) { .mosaic { grid-template-columns: 1fr 1fr; } .mph.m-big { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 16 / 10; } }
 </style>

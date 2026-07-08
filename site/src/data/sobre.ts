@@ -14,6 +14,7 @@ export const sobre = {
     { label: 'Filosofia de atuação', texto: 'Trabalho <b>lado a lado com o PM</b> pra absorver a regra de negócio e idear junto; aprofundar no domínio é do meu perfil. E ando colado no <b>time técnico</b> o tempo todo, buscando validação de viabilidade cedo. Isso vai além de destravar o produto: mantém o time alinhado e vestindo a camisa. Trazer a engenharia desde a ideação evita aquele atrito de refinar algo que os devs rejeitam por não terem participado, quando poderiam ter levantado pontos antes.' },
     { label: 'O que me faz curioso', texto: 'Acredito que design é profissão que precisa <b>acompanhar a mudança</b>. Por isso ando cedo no que é novo, IA inclusive, e gosto de entender a prática real, mais cinza que o preto-no-branco da teoria.' }
   ] as SobreSecao[],
+  cta: 'Se chegou até aqui, é bem provável que a gente tenha papo.',
   fotos: [
     { src: '/fotos/01-cafe-retrato.jpg', alt: 'Michael tomando café num café', caption: 'Caféolatra assumido', big: true },
     { src: '/fotos/02-boxe.png', alt: 'Treino de boxe ao ar livre', caption: 'Boxe pra esvaziar a cabeça' },
